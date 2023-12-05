@@ -27,7 +27,8 @@ void PrintArray(string[] array, int length)
 {
 	for (int i = 0; i < length; i++)
 	{
-		Console.Write(array[i] + " ");
+		if(i == length - 1) Console.WriteLine(array[i]);
+		else Console.Write(array[i] + ", ");
 	}
 }
 // Console.WriteLine(originArray);
