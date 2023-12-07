@@ -31,8 +31,8 @@ class Program
 
 	static int CheckFlags(string[] arguments)
 	{
-		int flag = 0;
-		if (arguments.Length == 1)
+		int flag = 0; // значение флага останется 0, если методу Main() не будет передано ни одного
+		if (arguments.Length > 0 && arguments.Length < 2) // заходим в тело условия если получен 1 флаг
 		{
 			switch (arguments[0])
 			{
@@ -62,41 +62,44 @@ static int Compare(string strA, string strB, StringComparison comparisonType)
 	static string[] EnterByHand(int len)
 	{
 		string[] handArray = new string[len];
-		Console.WriteLine(handArray[0]);
+
 		for(int i = 0; i < len; i++)
 		{
 			Console.Write($"Введите элемент массива под индексом {i}:\t");
 			handArray[i] = Console.ReadLine();
 		}
-		Console.Write("Исходный массив:\t");
+
 		return handArray;
 	}
-	static int ReadConsole()
+
+	static int ReadConsole(string message)
 	{
+		Console.WriteLine(message);
 		int len = 0;
-		Console.WriteLine("Введите желаемое количество строк в массиве:\t");
 		var stringValue = Console.ReadLine(); // сохраняем в переменную без явного типа, то что введено в консоль
 		if ((int.TryParse(stringValue, out len)) && len > 0 && len < 50) return len;
-		else 
-		{
-			Console.WriteLine("Используйте целое положительное число"); 
-			return 0;
-		}
+		else return 0;
 
 	}
+
 	static void Main(string[] args)
 	{
-		if (args.Length > 0) CheckFlags(args);
-		string[] originArray = {"Hel", "2", "wor", ":-)"}; //“Russia”, “Denmark”, “Kazan” “1234”, “1567”, “-2”, “computer science”
-		int length = originArray.Length;
-		string[] myArray = new string[length];
-		int flag = CheckFlags(args);
-		if (flag == 0) myArray = FindMyLength(originArray, length);
-		if (flag == 2)
+		int flag = 0;
+		string[] myArray = {"Hel", "2", "wor", ":-)"};
+		flag = CheckFlags(args); // если есть флаг/-и то отправляем их в метод обработки флагов
+		if (flag == 2) // -by hand
 		{
-			length = ReadConsole();
-			if (length > 0) myArray = EnterByHand(length);
+			int len = ReadConsole("Введите желаемое количество строк в массиве:\t");
+			if (len == 0) Console.WriteLine("Используйте целое положительное число");
+			else myArray = EnterByHand(len);
+
 		}
+		 //“Russia”, “Denmark”, “Kazan” “1234”, “1567”, “-2”, “computer science”
+		// если флаги не получены запускаем программу с уже заданным массивом
+		Console.Write($"Исходный массив:\t");
+		PrintArray(myArray, myArray.Length);
+		myArray = FindMyLength(myArray, myArray.Length);
+		Console.Write($"Полученный массив:\t");
 		PrintArray(myArray, myArray.Length);
 	}
 
